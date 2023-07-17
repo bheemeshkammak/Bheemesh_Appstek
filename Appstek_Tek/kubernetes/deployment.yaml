@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: appstek_tek
+  name: appstek_tek
+  labels:
+    app: appstek_tek
+spec:
+  selector:
+    matchLabels:
+      app: appstek_tek
+  template:
+    metadata:
+      labels:
+        app: appstek_tek
+        name: appstek_tek
+    spec:
+      containers:
+        - name: appstek_tek
+          image: bheemeshkammak/Bheemesh_Appstek/appstek_tek
+          imagePullPolicy: Always
+        
+          env:
+            - name: SERVICE_NAME
+              value: "go-app"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "localhost:4317"
+            - name: INSECURE_MODE
+              value: "true"
+        
+          ports:
+        
+        
+          - containerPort: 1234
+            name: http
+        
+        
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 30
+        
